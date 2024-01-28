@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>CGPA and SGPA Calculator</title>
+    <h1>mini project</h1>
     <style>
         body {
             font-family: Arial, sans-serif;
