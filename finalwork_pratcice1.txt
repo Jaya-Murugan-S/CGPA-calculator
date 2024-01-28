@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CGPA and SGPA Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c489bd;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        .calculator {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #ffffff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .result h2 {
+            color: #333333;
+        }
+
+        .result p {
+            font-size: 20px;
+            color: #777777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CGPA and SGPA Calculator</h1>
+
+        <div class="calculator">
+            <h2>Select Calculation Type</h2>
+            <button type="button" id="sgpaButton">Calculate SGPA</button>
+            <button type="button" id="cgpaButton">Calculate CGPA</button>
+        </div>
+
+        <div class="result" id="resultDiv"></div>
+    </div>
+
+    <script>
+        document.getElementById("sgpaButton").addEventListener("click", function() {
+            var numTheorySubjects = parseInt(prompt("Enter the number of Theory Subjects:"));
+            var numLabSubjects = parseInt(prompt("Enter the number of Lab Subjects:"));
+
+            var totalCredits = numTheorySubjects * 3 + numLabSubjects; // Total credits calculated based on theory and lab subjects
+            var totalGradePoints = 0;
+
+            for (var i = 1; i <= numTheorySubjects; i++) {
+                var theoryGrade = prompt("Enter the grade for Theory Subject " + i + ":");
+                var theoryCreditPoints = getCreditPoints(theoryGrade, 3);
+
+                totalGradePoints += theoryCreditPoints;
+            }
+
+            for (var j = 1; j <= numLabSubjects; j++) {
+                var labGrade = prompt("Enter the grade for Lab Subject " + j + ":");
+                var labCreditPoints = getCreditPoints(labGrade, 1);
+
+                totalGradePoints += labCreditPoints;
+            }
+
+            var sgpa = totalGradePoints / totalCredits;
+            displayResult("SGPA", sgpa.toFixed(2));
+        });
+
+        document.getElementById("cgpaButton").addEventListener("click", function() {
+            var numSemesters = parseInt(prompt("Enter the number of Semesters:"));
+            var totalCredits = 0;
+            var totalGradePoints = 0;
+
+            if (numSemesters < 1 || numSemesters > 8) {
+                alert("Invalid input. Please enter a number between 1 and 8.");
+                return;
+            }
+
+            for (var i = 1; i <= numSemesters; i++) {
+                var numTheorySubjects = parseInt(prompt("Enter the number of Theory Subjects for Semester " + i + ":"));
+                var numLabSubjects = parseInt(prompt("Enter the number of Lab Subjects for Semester " + i + ":"));
+
+                var semesterCredits = numTheorySubjects * 3 + numLabSubjects;
+                var semesterGradePoints = 0;
+
+                for (var j = 1; j <= numTheorySubjects; j++) {
+                    var theoryGrade = prompt("Enter the grade for Theory Subject " + j + " in Semester " + i + ":");
+                    var theoryCreditPoints = getCreditPoints(theoryGrade, 3);
+
+                    semesterGradePoints += theoryCreditPoints;
+                }
+
+                for (var k = 1; k <= numLabSubjects; k++) {
+                    var labGrade = prompt("Enter the grade for Lab Subject " + k + " in Semester " + i + ":");
+                    var labCreditPoints = getCreditPoints(labGrade, 1);
+
+                    semesterGradePoints += labCreditPoints;
+                }
+
+                totalCredits += semesterCredits;
+                totalGradePoints += semesterGradePoints;
+            }
+
+            var cgpa = totalGradePoints / totalCredits;
+            displayResult("CGPA", cgpa.toFixed(2));
+        });
+
+        function getCreditPoints(grade, creditMultiplier) {
+            switch (grade) {
+                case "S":
+                    return 10.00 * creditMultiplier;
+                case "A":
+                    return 9.00 * creditMultiplier;
+                case "B":
+                    return 8.00 * creditMultiplier;
+                case "C":
+                    return 7.00 * creditMultiplier;
+                case "D":
+                    return 6.00 * creditMultiplier;
+                case "F":
+                    return 0.00 * creditMultiplier;
+                default:
+                    return 0;
+            }
+        }
+
+        function displayResult(type, result) {
+            var resultDiv = document.createElement("div");
+            resultDiv.innerHTML = `
+                <h2>Result</h2>
+                <p>Your ${type} is: ${result}</p>
+            `;
+
+            document.body.appendChild(resultDiv);
+        }
+    </script>
+</body>
+</html>
